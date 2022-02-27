@@ -1,5 +1,5 @@
 1. add CONFIG_CHECK from linux-mod eclass, to check needed modules
-2. remove non tested archs from KEYWORDS key.
-3. change DEPEND -> RDEPEND
-4. adjust PYTHON_TARGETS dependencies.
-5. remove startTouchpadOnTheFly use flag.
+2. remove non tested archs from KEYWORDS key. (done)
+3. change DEPEND -> RDEPEND (done)
+4. adjust PYTHON_TARGETS dependencies. (done)
+5. remove startTouchpadOnTheFly use flag. (done)

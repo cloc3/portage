@@ -6,7 +6,6 @@
 		<name>Marco Clocchiatti</name>
 	</maintainer>
 	<use>
-		<flag name="startTouchpadOnTheFly">Enables touchpad service on the fly</flag>
 		<flag name="systemd">Installs systemd services </flag>
 		<flag name="openrc">Installs openrc services </flag>
 	</use>

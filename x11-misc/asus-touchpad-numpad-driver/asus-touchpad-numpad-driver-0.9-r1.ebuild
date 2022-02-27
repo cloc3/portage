@@ -4,7 +4,7 @@
 EAPI=8
 PYTHON_COMPAT=( python3_{8,9} )
 
-inherit readme.gentoo-r1 systemd
+inherit readme.gentoo-r1 systemd python-r1
 
 DESCRIPTION="py service which enables switching between numpad and touchpad for Asus laptops"
 HOMEPAGE="https://github.com/mohamed-badaoui/asus-touchpad-numpad-driver" # commit: d80980af6ef776ee6acf42c193689f207caa7968
@@ -12,12 +12,14 @@ SRC_URI="https://github.com/cloc3/portage/raw/main/x11-misc/${PN}/${P}.zip"
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~arm64 ~mips ~ppc ~ppc64 ~riscv ~x86"
-IUSE="startTouchpadOnTheFly systemd openrc"
+KEYWORDS="~amd64"
+IUSE="systemd openrc"
 
 DEPEND="
 	dev-python/python-libevdev
 	sys-apps/i2c-tools
+	systemd? ( sys-apps/systemd )
+	openrc? ( sys-apps/openrc )
 	"
 
 #RDEPEND="${DEPEND}"
@@ -54,14 +56,15 @@ pkg_prerm() {
 
 src_install() {
 	exeinto /usr/share/asus_touchpad_numpad-driver
-	doexe asus_touchpad.py
-	doexe "${FILESDIR}/loadModules.sh"
 	doexe "${FILESDIR}/touchReset.sh"
-	insinto /usr/share/asus_touchpad_numpad-driver
-	doins -r numpad_layouts
-	doins -r tests
+	doexe "${FILESDIR}/loadModules.sh"
+	python_setup
+	python_domodule numpad_layouts
+	python_doexe tests/test_brightness.py
+	python_doexe asus_touchpad.py
 	use systemd && {
 		systemd_newunit asus_touchpad.service ${PN}.service
+		systemd_install_serviced ${FILESDIR}/${PN}.service.conf
 	}
 	use openrc && {
 		newinitd "${FILESDIR}/${PN}.initd" "${PN}"
@@ -71,40 +74,16 @@ src_install() {
 }
 
 pkg_postinst() {
-	use startTouchpadOnTheFly && {
-		modprobe -v i2c-dev
-		modprobe -v uinput
-		[ -d /var/db/pkg/sys-apps/systemd-* ] && {
-			use systemd && {
-				systemctl enable ${PN}
-				systemctl start ${PN}
-			} || {
-				elog "To start systemd service do:"
-				elog "# systemctl enable ${PN}.service"
-				elog "# systemctl start ${PN}.service"
-				elog
-			}
-			use openrc && {
-				elog ""
-				elog "systemd found: cannot start openrc service"
-				elog ""
-			}
-		}
-		[ -d /var/db/pkg/sys-apps/openrc-* ] && {
-			use openrc && {
-				rc-update add ${PN} default
-				rc-service ${PN} start
-			} || {
-				elog "To start openrc service do:"
-				elog "# rc-update add ${PN}" default
-				elog "# rc-service ${PN} start"
-				elog ""
-			}
-			use systemd && {
-				elog ""
-				elog "openrc found: cannot start systemd service"
-				elog ""
-			}
-		}
+	use systemd && {
+		elog "To start systemd service do:"
+		elog "# systemctl enable ${PN}.service"
+		elog "# systemctl start ${PN}.service"
+		elog
+	}
+	use openrc && {
+		elog "To start openrc service do:"
+		elog "# rc-update add ${PN}" default
+		elog "# rc-service ${PN} start"
+		elog ""
 	}
 }

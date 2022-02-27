@@ -7,7 +7,7 @@
 start() {
     ebegin "Starting asus-touchpad-numpad-driver Service daemon"
 		/usr/share/asus_touchpad_numpad-driver/loadModules.sh
-		start-stop-daemon --start --quiet /usr/share/asus_touchpad_numpad-driver/asus_touchpad.py $LAYOUT $PERCENTAGE_KEY --pidfile /var/run/asus-touchpad-numpad-driver.pid
+		start-stop-daemon --start --quiet python /usr/bin/asus-touchpad-numpad-driver.py $LAYOUT $PERCENTAGE_KEY --pidfile /var/run/asus-touchpad-numpad-driver.pid
     eend $?
 }
 

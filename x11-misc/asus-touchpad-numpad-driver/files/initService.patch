@@ -1,13 +1,30 @@
 diff -ruN asus-touchpad-numpad-driver-main.orig/asus_touchpad.service asus-touchpad-numpad-driver-main/asus_touchpad.service
 --- asus-touchpad-numpad-driver-main.orig/asus_touchpad.service	2021-11-17 17:25:34.000000000 +0100
-+++ asus-touchpad-numpad-driver-main/asus_touchpad.service	2022-02-24 22:08:30.914786344 +0100
-@@ -10,7 +10,8 @@
- TimeoutSec=5
++++ asus-touchpad-numpad-driver-main/asus_touchpad.service	2022-02-27 14:15:40.596253587 +0100
+@@ -3,7 +3,7 @@
+ 
+ [Service]
+ Type=simple
+-ExecStart=/usr/share/asus_touchpad_numpad-driver/asus_touchpad.py $LAYOUT $PERCENTAGE_KEY
++ExecStart=python /usr/bin/asus_touchpad.py $LAYOUT $PERCENTAGE_KEY
+ StandardInput=tty-force
+ StandardOutput=/var/log/asus_touchpad_numpad-driver/error.log
+ StandardError=/var/log/asus_touchpad_numpad-driver/error.log
+@@ -11,6 +11,8 @@
  Restart=on-failure
  # For some operating systems with boot failure, adding this following property might resolve the issue  
--# ExecStartPre=/bin/sleep 2
+ # ExecStartPre=/bin/sleep 2
 +ExecStartPre=/usr/share/asus_touchpad_numpad-driver/loadModules.sh
 +ExecStop=/usr/share/asus_touchpad_numpad-driver/touchReset.sh
  
  [Install]
  WantedBy=default.target
+diff -ruN asus-touchpad-numpad-driver-main.orig/tests/test_brightness.py asus-touchpad-numpad-driver-main/tests/test_brightness.py
+--- asus-touchpad-numpad-driver-main.orig/tests/test_brightness.py	2021-11-17 17:25:34.000000000 +0100
++++ asus-touchpad-numpad-driver-main/tests/test_brightness.py	2022-02-27 07:28:58.297693573 +0100
+@@ -1,4 +1,4 @@
+-#!/bin/python3
++#!/usr/bin/python3
+ 
+ import re
+ import os
