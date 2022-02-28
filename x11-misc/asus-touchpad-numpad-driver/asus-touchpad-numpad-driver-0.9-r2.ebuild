@@ -2,9 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-PYTHON_COMPAT=( python3_{8,9} )
+PYTHON_COMPAT=( python3_{8..10} )
 
-inherit readme.gentoo-r1 systemd python-r1
+inherit systemd python-r1 linux-info
 
 DESCRIPTION="py service which enables switching between numpad and touchpad for Asus laptops"
 HOMEPAGE="https://github.com/mohamed-badaoui/asus-touchpad-numpad-driver" # commit: d80980af6ef776ee6acf42c193689f207caa7968
@@ -13,30 +13,26 @@ SRC_URI="https://github.com/cloc3/portage/raw/main/x11-misc/${PN}/${P}.zip"
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="systemd openrc"
+IUSE="systemd openrc -test"
 
-DEPEND="
+RDEPEND="
+	>dev-lang/python-3.0
 	dev-python/python-libevdev
 	sys-apps/i2c-tools
 	systemd? ( sys-apps/systemd )
 	openrc? ( sys-apps/openrc )
 	"
 
-#RDEPEND="${DEPEND}"
-
-PROPERTIES="interactive"
+#PROPERTIES="interactive"
 
 PATCHES=(
 	"${FILESDIR}/initService.patch"
 )
 
-pkg_pretend() {
-	elog ""
-	elog "warn:"
-	elog "needed modules to have numpad working:"
-	elog "i2c_dev and uinput"
-	elog ""
-}
+CONFIG_CHECK="
+	~INPUT_UINPUT
+	~I2C_CHARDEV
+"
 
 src_unpack() {
 	default
@@ -55,16 +51,16 @@ pkg_prerm() {
 }
 
 src_install() {
-	exeinto /usr/share/asus_touchpad_numpad-driver
+	exeinto /usr/share/${PN}
 	doexe "${FILESDIR}/touchReset.sh"
 	doexe "${FILESDIR}/loadModules.sh"
 	python_setup
 	python_domodule numpad_layouts
-	python_doexe tests/test_brightness.py
+	use test && python_doexe tests/test_brightness.py
 	python_doexe asus_touchpad.py
 	use systemd && {
-		systemd_newunit asus_touchpad.service ${PN}.service
-		systemd_install_serviced ${FILESDIR}/${PN}.service.conf
+		systemd_newunit asus_touchpad.service "${PN}.service"
+		systemd_install_serviced "${FILESDIR}/${PN}.service.conf"
 	}
 	use openrc && {
 		newinitd "${FILESDIR}/${PN}.initd" "${PN}"

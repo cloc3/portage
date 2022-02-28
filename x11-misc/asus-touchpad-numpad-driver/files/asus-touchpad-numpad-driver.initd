@@ -6,15 +6,14 @@
 
 start() {
     ebegin "Starting asus-touchpad-numpad-driver Service daemon"
-		/usr/share/asus_touchpad_numpad-driver/loadModules.sh
-		start-stop-daemon --start --quiet python /usr/bin/asus-touchpad-numpad-driver.py $LAYOUT $PERCENTAGE_KEY --pidfile /var/run/asus-touchpad-numpad-driver.pid
+		/usr/share/asus-touchpad-numpad-driver/loadModules.sh
+		start-stop-daemon --start --quiet /usr/bin/asus-touchpad-numpad-driver.py $LAYOUT $PERCENTAGE_KEY --pidfile /var/run/asus-touchpad-numpad-driver.pid
     eend $?
 }
 
 stop() {
     ebegin "Stopping asus-touchpad-numpad-driver Service daemon"
-		device_id=$(cat /proc/bus/input/devices |grep -e "ASUE" |grep Touch -A2|tail -n1|sed 's/\(.*\)i2c-\(.*\)i2c-\(.*\)/\2/'|sed 's/\///)
-		i2ctransfer -f -y ${device_id} w13@0x15 0x05 0x00 0x3d 0x03 0x06 0x00 0x07 0x00 0x0d 0x14 0x03 0x00 0xad
+		/usr/share/asus-touchpad-numpad-driver/touchReset.sh
     start-stop-daemon --stop --quiet \
 	--pidfile /var/run/asus-touchpad-numpad-driver.pid \
     eend $?

@@ -1,4 +1,4 @@
-1. add CONFIG_CHECK from linux-mod eclass, to check needed modules
+1. add CONFIG_CHECK from linux-mod eclass, to check needed module (done)s
 2. remove non tested archs from KEYWORDS key. (done)
 3. change DEPEND -> RDEPEND (done)
 4. adjust PYTHON_TARGETS dependencies. (done)
