@@ -4,24 +4,27 @@
 EAPI=8
 PYTHON_COMPAT=( python3_{8..10} )
 
-inherit systemd python-r1 linux-info
+inherit systemd python-single-r1 linux-info
 
 DESCRIPTION="py service which enables switching between numpad and touchpad for Asus laptops"
 HOMEPAGE="https://github.com/mohamed-badaoui/asus-touchpad-numpad-driver" # commit: d80980af6ef776ee6acf42c193689f207caa7968
-SRC_URI="https://github.com/cloc3/portage/raw/main/x11-misc/${PN}/${P}.zip"
+SRC_URI="https://github.com/cloc3/portage/raw/main/distfiles/${P}.zip"
 
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
 IUSE="systemd openrc -test"
+REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 RDEPEND="
-	>dev-lang/python-3.0
+	${PYTHON_DEPS}
 	dev-python/python-libevdev
 	sys-apps/i2c-tools
 	systemd? ( sys-apps/systemd )
 	openrc? ( sys-apps/openrc )
 	"
+
+BDEPEND="${RDEPENDS}"
 
 #PROPERTIES="interactive"
 
@@ -34,10 +37,7 @@ CONFIG_CHECK="
 	~I2C_CHARDEV
 "
 
-src_unpack() {
-	default
-	mv "./${PN}-main" "./${P}"
-}
+S="${WORKDIR}/${PN}-main"
 
 pkg_prerm() {
 	[ -f /lib/systemd/system/${PN}.service ] && {
@@ -71,15 +71,25 @@ src_install() {
 
 pkg_postinst() {
 	use systemd && {
+		elog ""
 		elog "To start systemd service do:"
 		elog "# systemctl enable ${PN}.service"
 		elog "# systemctl start ${PN}.service"
-		elog
+		elog ""
 	}
 	use openrc && {
+		elog ""
 		elog "To start openrc service do:"
 		elog "# rc-update add ${PN}" default
 		elog "# rc-service ${PN} start"
+		elog ""
+	}
+	use test && {
+		elog ""
+		elog "For testing your touchpad do:"
+		elog "# modprobe -v uinput"
+		elog "# modprobe -v i2c-dev"
+		elog "test_brightenss.py"
 		elog ""
 	}
 }
