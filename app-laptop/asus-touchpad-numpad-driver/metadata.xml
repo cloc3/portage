@@ -6,9 +6,9 @@
 		<name>Marco Clocchiatti</name>
 	</maintainer>
 	<use>
-		<flag name="startTouchpadOnTheFly">Enables touchpad service on the fly</flag>
 		<flag name="systemd">Installs systemd services </flag>
 		<flag name="openrc">Installs openrc services </flag>
+		<flag name="test">Installs driver test_brightness.py </flag>
 	</use>
 	<longdescription lang="en">
 		Driver for asus touchpads
