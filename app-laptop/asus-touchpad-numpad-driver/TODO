@@ -1,0 +1,6 @@
+fixing for "$pkgcheck scan --net" issues:
+
+app-laptop/asus-touchpad-numpad-driver
+  RedundantLongDescription: metadata.xml longdescription is too short
+  BadDefaultUseFlags: version 0.9: bad default USE flag: '-test'
+  MissingUnpackerDep: version 0.9: missing BDEPEND="app-arch/unzip" for SRC_URI archive: [ asus-touchpad-numpad-driver-0.9.zip ]
