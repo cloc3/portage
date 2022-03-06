@@ -8,12 +8,12 @@ inherit systemd python-single-r1 linux-info
 
 DESCRIPTION="py service which enables switching between numpad and touchpad for Asus laptops"
 HOMEPAGE="https://github.com/mohamed-badaoui/asus-touchpad-numpad-driver" # commit: d80980af6ef776ee6acf42c193689f207caa7968
-SRC_URI="https://github.com/cloc3/portage/raw/main/distfiles/${P}.zip"
+SRC_URI="https://github.com/cloc3/portage/raw/main/distfiles/${P}.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="systemd openrc -test"
+IUSE="systemd openrc -test-brightness"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 RDEPEND="
@@ -56,7 +56,7 @@ src_install() {
 	doexe "${FILESDIR}/loadModules.sh"
 	python_setup
 	python_domodule numpad_layouts
-	use test && python_doexe tests/test_brightness.py
+	use test-brightness && python_doexe test/test_brightness.py
 	python_doexe asus_touchpad.py
 	use systemd && {
 		systemd_newunit asus_touchpad.service "${PN}.service"
@@ -84,7 +84,7 @@ pkg_postinst() {
 		elog "# rc-service ${PN} start"
 		elog ""
 	}
-	use test && {
+	use test-brightness && {
 		elog ""
 		elog "For testing your touchpad do:"
 		elog "# modprobe -v uinput"
