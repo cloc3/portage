@@ -1,15 +1,14 @@
-BDEPEND=virtual/pkgconfig
 DEFINED_PHASES=install postinst prerm setup
 DESCRIPTION=py service which enables switching between numpad and touchpad for Asus laptops
 EAPI=8
 HOMEPAGE=https://github.com/mohamed-badaoui/asus-touchpad-numpad-driver
-INHERIT=systemd python-single-r1 linux-info
-IUSE=systemd openrc -test python_single_target_python3_8 python_single_target_python3_9 python_single_target_python3_10
+INHERIT=python-single-r1 linux-info
+IUSE=python_single_target_python3_8 python_single_target_python3_9 python_single_target_python3_10
 KEYWORDS=~amd64
 LICENSE=GPL-3
-RDEPEND=python_single_target_python3_8? ( >=dev-lang/python-3.8.12_p1-r1:3.8 ) python_single_target_python3_9? ( >=dev-lang/python-3.9.9-r1:3.9 ) python_single_target_python3_10? ( >=dev-lang/python-3.10.0_p1-r1:3.10 ) dev-python/python-libevdev sys-apps/i2c-tools systemd? ( sys-apps/systemd ) openrc? ( sys-apps/openrc )
+RDEPEND=python_single_target_python3_8? ( >=dev-lang/python-3.8.12_p1-r1:3.8 ) python_single_target_python3_9? ( >=dev-lang/python-3.9.9-r1:3.9 ) python_single_target_python3_10? ( >=dev-lang/python-3.10.0_p1-r1:3.10 ) dev-python/python-libevdev sys-apps/i2c-tools
 REQUIRED_USE=^^ ( python_single_target_python3_8 python_single_target_python3_9 python_single_target_python3_10 )
 SLOT=0
-SRC_URI=https://github.com/cloc3/portage/raw/main/distfiles/asus-touchpad-numpad-driver-0.9.zip
-_eclasses_=toolchain-funcs	badd6e329e1f3e6bee99b35bf8763ce8	multilib	de4beb52bfa93c4c5d96792a6b5e1784	systemd	2736b403a83f194b59b767f3b344c2c1	multiprocessing	61c959fc55c15c00bbb1079d6a71370b	python-utils-r1	d3d7da5aff94a677154819e0cb95ee36	python-single-r1	3c5721adc30f98c39739c5970a4762d8	linux-info	2f039741fe92bcea55c78806d16ac0f5
-_md5_=4e7ff19fc4314f61479b3020f138a95c
+SRC_URI=https://github.com/cloc3/portage/raw/main/distfiles/asus-touchpad-numpad-driver-0.9.tar.gz
+_eclasses_=multiprocessing	61c959fc55c15c00bbb1079d6a71370b	toolchain-funcs	badd6e329e1f3e6bee99b35bf8763ce8	multilib	de4beb52bfa93c4c5d96792a6b5e1784	python-utils-r1	d3d7da5aff94a677154819e0cb95ee36	python-single-r1	3c5721adc30f98c39739c5970a4762d8	linux-info	2f039741fe92bcea55c78806d16ac0f5
+_md5_=97ca3e4b00f79235a676a3a9d810ec94
