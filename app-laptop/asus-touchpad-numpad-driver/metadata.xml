@@ -5,12 +5,9 @@
 		<email>ziapannocchia@gmail.org</email>
 		<name>Marco Clocchiatti</name>
 	</maintainer>
-	<use>
-		<flag name="systemd">Installs systemd services </flag>
-		<flag name="openrc">Installs openrc services </flag>
-		<flag name="test-brightness">Installs driver test_brightness.py </flag>
-	</use>
 	<longdescription lang="en">
-		Driver for asus touchpads
+		Driver for swithcing asus touchpads from touch to numpad mode.
+		Sources comes from https://github.com/mohamed-badaoui/asus-touchpad-numpad-driver
+		SRC_URI containes a copy of commit: d80980af6ef776ee6acf42c193689f207caa7968
 	</longdescription>
 </pkgmetadata>
