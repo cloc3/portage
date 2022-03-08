@@ -53,7 +53,7 @@ src_install() {
 	doexe "${FILESDIR}/loadModules.sh"
 	python_setup
 	python_domodule numpad_layouts
-	use test-brightness && python_doexe test/test_brightness.py
+	python_doexe tests/test_brightness.py
 	python_doexe asus_touchpad.py
 	default
 }
